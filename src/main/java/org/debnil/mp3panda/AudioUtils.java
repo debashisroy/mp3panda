@@ -1,5 +1,6 @@
 package org.debnil.mp3panda;
 
+import com.google.common.io.Files;
 import org.apache.commons.io.IOUtils;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -12,15 +13,22 @@ import org.jaudiotagger.tag.lyrics3.Lyrics3v2Field;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by debnil on 05-Aug-15.
  */
 public class AudioUtils {
+    public static final String MP3_EXTENSION = "mp3";
+
     private static final String PREFIX = "${";
     private static final String POSTFIX = "}";
 
@@ -29,6 +37,25 @@ public class AudioUtils {
             FieldKey.YEAR, FieldKey.TRACK, FieldKey.GENRE,
             FieldKey.ENCODER,
             FieldKey.COMPOSER, FieldKey.CONDUCTOR, FieldKey.GROUPING, FieldKey.KEY};
+
+    protected List<MP3File> populateFileList(File directory, boolean recursive) {
+        if (directory.exists() && directory.isDirectory()) {
+            List<File> files = new ArrayList<>();
+            loadFiles(files, directory, recursive);
+            List<MP3File> fileList = files.stream().map(file -> new MP3File(file)).collect(Collectors.toList());
+            return fileList;
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    private void loadFiles(List<File> files, File directory, boolean recursive) {
+        List<File> fileList = Arrays.asList(directory.listFiles());
+        fileList.stream().filter(file -> file.isFile() && MP3_EXTENSION.equalsIgnoreCase(Files.getFileExtension(file.getName()))).forEachOrdered(file -> files.add(file));
+        if (recursive) {
+            fileList.stream().filter(file -> file.isDirectory()).forEachOrdered(dir -> loadFiles(files, dir, recursive));
+        }
+    }
+
 
     public static Map<FieldKey, String> load(File audioFile) throws Exception {
         AudioFile f = AudioFileIO.read(audioFile);
