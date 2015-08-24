@@ -1,5 +1,6 @@
-package org.debnil.mp3panda;
+package org.debnil.mp3panda.mp3;
 
+import org.debnil.mp3panda.util.AudioUtils;
 import org.jaudiotagger.tag.FieldKey;
 
 import java.io.File;

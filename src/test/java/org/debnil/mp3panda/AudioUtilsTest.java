@@ -1,5 +1,6 @@
 package org.debnil.mp3panda;
 
+import org.debnil.mp3panda.util.AudioUtils;
 import org.jaudiotagger.tag.FieldKey;
 import org.junit.Test;
 

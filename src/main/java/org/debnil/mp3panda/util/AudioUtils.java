@@ -1,7 +1,8 @@
-package org.debnil.mp3panda;
+package org.debnil.mp3panda.util;
 
 import com.google.common.io.Files;
 import org.apache.commons.io.IOUtils;
+import org.debnil.mp3panda.mp3.MP3File;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
