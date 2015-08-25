@@ -39,7 +39,7 @@ public class AudioUtils {
             FieldKey.ENCODER,
             FieldKey.COMPOSER, FieldKey.CONDUCTOR, FieldKey.GROUPING, FieldKey.KEY};
 
-    protected List<MP3File> populateFileList(File directory, boolean recursive) {
+    public static List<MP3File> populateFileList(File directory, boolean recursive) {
         if (directory.exists() && directory.isDirectory()) {
             List<File> files = new ArrayList<>();
             loadFiles(files, directory, recursive);
@@ -49,7 +49,7 @@ public class AudioUtils {
         return Collections.EMPTY_LIST;
     }
 
-    private void loadFiles(List<File> files, File directory, boolean recursive) {
+    private static void loadFiles(List<File> files, File directory, boolean recursive) {
         List<File> fileList = Arrays.asList(directory.listFiles());
         fileList.stream().filter(file -> file.isFile() && MP3_EXTENSION.equalsIgnoreCase(Files.getFileExtension(file.getName()))).forEachOrdered(file -> files.add(file));
         if (recursive) {
