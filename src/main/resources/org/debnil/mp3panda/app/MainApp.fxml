@@ -39,7 +39,7 @@
                   <children>
                     <TableView fx:id="tblSongs" prefHeight="187.0" prefWidth="788.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                       <columns>
-                        <TableColumn prefWidth="24.0" sortable="false">
+                        <TableColumn maxWidth="25.0" minWidth="25.0" prefWidth="25.0" resizable="false" sortable="false">
                           <cellValueFactory>
                             <PropertyValueFactory property="checked" />
                           </cellValueFactory>

@@ -16,13 +16,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Created by debnil on 05-Aug-15.
@@ -37,16 +35,21 @@ public class AudioUtils {
             FieldKey.COMMENT,
             FieldKey.YEAR, FieldKey.TRACK, FieldKey.GENRE,
             FieldKey.ENCODER,
-            FieldKey.COMPOSER, FieldKey.CONDUCTOR, FieldKey.GROUPING, FieldKey.KEY};
+            FieldKey.COMPOSER, FieldKey.CONDUCTOR, FieldKey.GROUPING};
 
-    public static List<MP3File> populateFileList(File directory, boolean recursive) {
+    public static List<MP3File> populateFileList(File directory, boolean recursive, List<MP3File> fileList) {
+        if (fileList == null) {
+            fileList = new ArrayList<>();
+        }
         if (directory.exists() && directory.isDirectory()) {
             List<File> files = new ArrayList<>();
             loadFiles(files, directory, recursive);
-            List<MP3File> fileList = files.stream().map(file -> new MP3File(file)).collect(Collectors.toList());
-            return fileList;
+
+            for (File file : files) {
+                fileList.add(new MP3File(file));
+            }
         }
-        return Collections.EMPTY_LIST;
+        return fileList;
     }
 
     private static void loadFiles(List<File> files, File directory, boolean recursive) {
@@ -127,5 +130,32 @@ public class AudioUtils {
             }
         }
         return input;
+    }
+
+    public static String transform(Map<String, String> groups, String outPattern) throws GroupNotFoundException {
+        StringBuilder sb = new StringBuilder();
+
+        String tempOutPattern = outPattern;
+        int index = tempOutPattern.indexOf(PREFIX);
+
+        while (index >= 0) {
+            sb.append(tempOutPattern.substring(0, index));
+            tempOutPattern = tempOutPattern.substring(index + 2);
+
+            int endIndex = tempOutPattern.indexOf(POSTFIX);
+            String groupName = tempOutPattern.substring(0, endIndex);
+
+            if (!groups.containsKey(groupName)) {
+                throw new GroupNotFoundException(groupName);
+            }
+
+            sb.append(groups.get(groupName).trim());
+
+            tempOutPattern = tempOutPattern.substring(endIndex + 1);
+            index = tempOutPattern.indexOf(PREFIX);
+        }
+
+        sb.append(tempOutPattern);
+        return sb.toString();
     }
 }

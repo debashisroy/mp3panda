@@ -1,7 +1,6 @@
 package org.debnil.mp3panda.app;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,14 +14,13 @@ import org.debnil.mp3panda.util.AudioUtils;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
 /**
  * Created by debnil on 23-Aug-15.
  */
-public class MainAppController implements Initializable{
+public class MainAppController implements Initializable {
     @FXML
     private TextField txtFolder;
 
@@ -31,6 +29,9 @@ public class MainAppController implements Initializable{
 
     @FXML
     private TableView tblSongs;
+
+    @FXML
+    private TableView tblDetails;
 
     @FXML
     protected void btnSelectDirectoryAction(ActionEvent event) {
@@ -42,20 +43,21 @@ public class MainAppController implements Initializable{
 
             loadSongs();
         }
-
     }
 
-    protected void loadSongs(){
+    protected void loadSongs() {
         File folder = new File(txtFolder.getText());
         boolean recursive = chkSubDirectory.isSelected();
 
-        List<MP3File> files = AudioUtils.populateFileList(folder, recursive);
+        ObservableList<MP3File> list = FXCollections.observableArrayList();
+        tblSongs.setItems(list);
 
-        tblSongs.setItems(FXCollections.observableArrayList(files));
+        new Thread(() -> AudioUtils.populateFileList(folder, recursive, list)).start();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        tblSongs.setItems(songList);
+        tblSongs.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
+                tblDetails.setItems(newVal != null ? FXCollections.observableArrayList(((MP3File) newVal).getMetadataFields()) : FXCollections.emptyObservableList()));
     }
 }
