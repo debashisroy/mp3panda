@@ -1,0 +1,13 @@
+[{
+  "name" : "www.indiamp3.com - format",
+  "fields" : {
+    "TITLE" : {
+      "source" : "bb",
+      "target" : "b"
+    },
+    "FILE_NAME" : {
+      "source" : "aa",
+      "target" : "a"
+    }
+  }
+}]
