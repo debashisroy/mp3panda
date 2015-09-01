@@ -1,0 +1,39 @@
+[
+  {
+    "name" : "default - format",
+    "fields" : {
+      "FILE_NAME" : {
+        "source" : ".*",
+        "target" : "${artist} - ${title}.mp3"
+      },
+      "TITLE" : {
+        "source" : "(?<title>.+)",
+        "target" : "${title}"
+      },
+      "ARTIST" : {
+        "source" : "(?<artist>.+)",
+        "target" : "${artist}"
+      },
+      "ALBUM" : {
+        "source" : "(?<album>.+)",
+        "target" : "${album}"
+      },
+      "COMMENT" : {
+        "source" : ".*",
+        "target" : "${artist} - ${album} - ${title}"
+      },
+      "ENCODER" : {
+        "source" : ".*",
+        "target" : ""
+      },
+      "CONDUCTOR" : {
+        "source" : ".*",
+        "target" : ""
+      },
+      "COMPOSER" : {
+        "source" : ".*",
+        "target" : ""
+      }
+    }
+  }
+]

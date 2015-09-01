@@ -1,6 +1,7 @@
 package org.debnil.mp3panda;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.debnil.mp3panda.meta.transformer.MetaTransformationUtil;
 import org.debnil.mp3panda.meta.transformer.MetaTransformer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,11 +9,12 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by debashis.roy on 9/1/2015.
  */
-public class JsonTest {
+public class MetaTransformerTest {
 
     @Test
     public void testJackson() throws IOException {
@@ -34,5 +36,12 @@ public class JsonTest {
             t.printStackTrace();
             Assert.fail();
         }
+    }
+
+    @Test
+    public void lestLoadTransformers(){
+        Map<String, MetaTransformer> rules = MetaTransformationUtil.loadTransformationRules();
+
+        Assert.assertNotNull(rules);
     }
 }
