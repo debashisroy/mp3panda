@@ -20,7 +20,7 @@
       },
       "COMMENT" : {
         "source" : ".*",
-        "target" : "${artist} - ${album} - ${title}"
+        "target" : ""
       },
       "ENCODER" : {
         "source" : ".*",

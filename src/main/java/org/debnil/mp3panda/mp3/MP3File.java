@@ -26,7 +26,7 @@ public class MP3File {
         this.file = file;
         name = new SimpleStringProperty(file.getName());
         directory = new SimpleStringProperty(file.getParent());
-        checked = new SimpleBooleanProperty(false);
+        checked = new SimpleBooleanProperty(true);
         loadMetadata();
     }
 
@@ -67,6 +67,23 @@ public class MP3File {
             }
         } catch (Throwable t) {
             throw new RuntimeException(t);
+        }
+    }
+
+    public void saveFile(File targetDir) {
+        File target = new File(targetDir, metadata.get(FILE_NAME).getNewValue());
+
+        Map<FieldKey, String> fieldMap = new HashMap<>();
+        for (AudioMetadataField field : metadata.values()) {
+            if (!field.getField().equals(FILE_NAME)) {
+                fieldMap.put(FieldKey.valueOf(field.getField()), field.getNewValue());
+            }
+        }
+
+        try {
+            AudioUtils.update(file, target, fieldMap);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

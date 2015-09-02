@@ -34,6 +34,7 @@ public class MetaTransformationUtil {
             try {
                 return Lists.newArrayList(mapper.readValue(file, MetaTransformer[].class));
             } catch (Throwable t) {
+                t.printStackTrace();
                 new RuntimeException("Failed to load file.");
             }
         }
